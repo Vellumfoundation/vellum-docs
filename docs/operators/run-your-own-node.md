@@ -30,7 +30,7 @@ The configs documented here are for the Vellum testnet, which settles to Base Se
 | Deposit contract / Portal (L1) | `0xf3b6462c821ba276f1bd18d008482b6ce6a44ed7` |
 | L1 SystemConfig | `0xe939c1a1c50e254a19efea4ac87b68a262433365` |
 
-These values are taken directly from the published [`rollup.json`](../../configs/testnet/rollup.json) and [`genesis.json`](../../configs/testnet/genesis.json) in the `configs/testnet/` directory of the docs repo.
+These values are taken directly from the published `rollup.json` and `genesis.json` in the [vellum-testnet-node](https://github.com/Vellumfoundation/vellum-testnet-node) repository, which is the canonical download for running your own node.
 
 ## When you should run your own node
 
@@ -57,16 +57,20 @@ You will also need a Base RPC URL. You can use a public Base Sepolia RPC for tes
 
 ## Step 1. Get the configs
 
-Clone the docs repo to get the genesis and rollup config:
+Clone the [vellum-testnet-node](https://github.com/Vellumfoundation/vellum-testnet-node) repo. It contains `genesis.json`, `rollup.json`, a Docker Compose stack, and an `.env.example` template:
 
 ```bash
-git clone https://github.com/Vellumfoundation/vellum-docs.git
-cd vellum-docs/configs/testnet
-ls
-# genesis.json   rollup.json   README.md
+git clone https://github.com/Vellumfoundation/vellum-testnet-node.git
+cd vellum-testnet-node
+ls configs/
+# genesis.json   rollup.json
 ```
 
-You can also download them directly from the repo if you prefer.
+You can also download `configs/genesis.json` and `configs/rollup.json` directly from the repo if you prefer not to clone.
+
+{% hint style="info" %}
+The fastest way to bring up a node is the bundled Docker Compose stack in that repo. Set `L1_RPC_URL` and `L1_BEACON_URL` in `.env`, then run `docker compose up -d`. The rest of this page walks through the same flow step by step so you can adapt it.
+{% endhint %}
 
 Verify the basics with `jq`:
 
@@ -92,7 +96,7 @@ export L1_RPC_URL=https://sepolia.base.org
 export L1_BEACON_URL=https://sepolia.base.org   # replace with a beacon-capable endpoint
 
 # Path to the configs you cloned
-export VELLUM_CONFIG_DIR=$(pwd)
+export VELLUM_CONFIG_DIR=$(pwd)/configs
 ```
 
 {% hint style="warning" %}

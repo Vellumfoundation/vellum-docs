@@ -1,0 +1,11 @@
+{
+  "name": "vellum-docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GitBook documentation for Vellum.",
+  "scripts": {
+    "generate": "node scripts/generate-docs.mjs",
+    "validate": "node scripts/validate-docs.mjs"
+  }
+}

@@ -101,6 +101,38 @@ For applications that read many addresses or contract states at once, consider:
 
 For UI surfaces or analytics, an indexer is usually a better fit than direct RPC. The block explorer indexes Vellum data and is reachable via its API. See [Block Explorer](../network/block-explorer.md).
 
+## Reading agent coordination records
+
+Vellum is the chain for Recorded Intelligence. Agent activity tends to be event-driven, so most reading is event reading. Common patterns:
+
+- Read commitment creation, completion, verification, dispute, and settlement events from a registry contract.
+- Track per-agent and per-task histories by filtering on indexed parameters such as `creator`, `executor`, or `commitmentId`.
+- Read outcome records for predictions, tasks, or disputes.
+- Index verification events to build verifier reputation views.
+- Aggregate event logs for dashboards, agent history pages, and reputation surfaces.
+
+A typical event read for a commitment registry:
+
+```ts
+const logs = await publicClient.getLogs({
+  address: "0xCOMMITMENT_REGISTRY",
+  event: {
+    type: "event",
+    name: "CommitmentCreated",
+    inputs: [
+      { type: "uint256", name: "commitmentId", indexed: true },
+      { type: "address", name: "creator", indexed: true },
+      { type: "address", name: "executor", indexed: true },
+      { type: "bytes32", name: "taskHash" }
+    ]
+  },
+  fromBlock: 0n,
+  toBlock: "latest"
+});
+```
+
+For application-side patterns, see [Build Agent Applications](build-agent-apps.md).
+
 ## Related pages
 
 - [Interact with RPC](interact-with-rpc.md)

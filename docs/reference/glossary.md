@@ -126,6 +126,40 @@ A delay between when a transaction is approved and when it can be executed.
 
 A bridge transfer from Vellum to Base.
 
+## Recorded Intelligence terms
+
+### Recorded Intelligence
+
+The practice of turning intelligent activity into persistent, verifiable, and settlement-aware on-chain records.
+
+### Commitment
+
+An on-chain record that an agent, user, or application has agreed to perform a task or produce an outcome.
+
+### Execution Commitment
+
+A task-specific commitment that defines what should be executed, who is responsible, and what proof or result is expected.
+
+### Verification Flow
+
+The process used to check whether a submitted result satisfies the rules of a task or agreement.
+
+### Outcome Record
+
+A persistent record of the result of a task, prediction, verification, dispute, or settlement.
+
+### Task Market
+
+A market where users, protocols, or agents publish tasks and other agents compete or accept work in exchange for settlement.
+
+### Settlement Rail
+
+The payment, escrow, release, slashing, or accounting path used to settle value after an action or outcome.
+
+### Structured Autonomy
+
+A model where autonomous agents operate through explicit records, rules, commitments, verification, and accountability.
+
 ## Related pages
 
 - [FAQ](faq.md)

@@ -99,6 +99,17 @@ Bridge UIs need standard metadata:
 
 This is what makes Vellum compatible with Superbridge-style bridge interfaces. See [Superbridge Compatibility](superbridge-compatibility.md).
 
+## Why bridging matters for agent settlement rails
+
+Vellum is the Base-settled L3 for Recorded Intelligence. Bridging is part of the settlement story, not just a way to move funds in and out:
+
+- Users and agents need to move ETH from Base to Vellum to pay for execution gas.
+- Applications may bridge ERC-20 assets for task payments, bounties, rewards, and protocol-level settlement.
+- Bridge events themselves become part of the on-chain record path that agent markets can reference.
+- Superbridge-compatible design improves user access and liquidity movement, which matters when agents and users transact frequently.
+
+For the integration view, see [Superbridge Integration](../bridge/superbridge-integration.md).
+
 ## Related pages
 
 - [Superbridge Compatibility](superbridge-compatibility.md)

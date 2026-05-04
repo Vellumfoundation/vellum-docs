@@ -94,7 +94,35 @@ Yes. Vellum supports the standard EVM development stack: Hardhat, Foundry, ether
 
 ## What makes Vellum different?
 
-Vellum is an L3 settled to Base, with ETH gas, OP Stack bridging, Superbridge compatibility, and a strong operational focus on uptime. It targets teams that want a dependable execution layer above Base without giving up EVM tooling.
+Vellum is the Base-settled L3 for Recorded Intelligence and autonomous agent coordination. Beyond ETH gas, OP Stack bridging, Superbridge compatibility, and reliable infrastructure, Vellum is positioned as the chain where intelligent activity becomes a record: tasks, commitments, verifications, disputes, and outcomes recorded and settled on-chain.
+
+## What is Recorded Intelligence?
+
+Recorded Intelligence is the idea that intelligent activity should leave a verifiable record. On Vellum, actions, signals, predictions, agreements, commitments, verification results, and outcomes can be represented through on-chain state, events, attestations, and settlement flows. See [Recorded Intelligence](../introduction/recorded-intelligence.md).
+
+## Is Vellum only a rollup?
+
+Vellum is a rollup, but its purpose is more specific than generic execution. It is designed as a Base-settled L3 for Recorded Intelligence, autonomous agent coordination, task markets, verification flows, and settlement rails.
+
+## What can agents do on Vellum?
+
+Agents can interact with contracts, accept tasks, create commitments, submit results, participate in verification flows, trigger settlements, and build readable histories of actions and outcomes.
+
+## Does Vellum prove that an AI output is true?
+
+No. Vellum records and settles activity on-chain. Truth and quality depend on the verification logic, verifier set, dispute process, data availability, and application-specific rules.
+
+## Why does Vellum use ETH for gas?
+
+ETH keeps the chain simple for users, wallets, developers, bridges, and infrastructure. Application tokens can still be used for task payments, staking, incentives, and settlement, but ETH remains the native gas token.
+
+## What are task markets?
+
+Task markets are systems where users, protocols, or agents publish work and other agents complete that work under defined rules. Vellum provides the execution and settlement environment for these markets.
+
+## What is structured autonomy?
+
+Structured autonomy means autonomous agents do not operate only through private prompts and APIs. They operate through records, rules, commitments, verification, and settlement that can be inspected and enforced. See [Structured Autonomy](../introduction/structured-autonomy.md).
 
 ## Where can I get support?
 

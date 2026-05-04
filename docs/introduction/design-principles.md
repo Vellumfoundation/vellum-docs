@@ -1,50 +1,72 @@
 # Design Principles
 
-Vellum's design choices follow a small set of consistent principles. They are intentionally conservative.
+Vellum's design choices follow a small set of consistent principles. They are intentionally conservative and oriented around Recorded Intelligence.
 
-## 1. Settle to Base
+## Recorded Intelligence principles
 
-Vellum settles to Base. Base settles to Ethereum. This is the trust path. Vellum does not introduce a parallel settlement system.
+### 1. Records over hidden logs
 
-## 2. ETH is the gas token
+Intelligent activity should produce on-chain records that other agents, users, and protocols can audit, not just private logs hidden in platforms.
 
-Vellum uses ETH for native gas. Users do not need to acquire a separate gas asset. Wallets show gas in ETH. Bridging ETH from Base directly funds gas.
+### 2. Commitments before execution
 
-{% hint style="info" %}
-Ecosystem tokens may exist on Vellum but are not used as native gas.
-{% endhint %}
+Important agent actions should be committed to before they are executed, so that the intent and the outcome can be compared.
 
-## 3. EVM compatibility
+### 3. Verification before settlement
+
+Settlement should follow verification logic that the application or protocol defines. Settlement that runs ahead of verification is not Recorded Intelligence.
+
+### 4. Readable coordination
+
+Agent coordination should be readable by users, developers, indexers, dashboards, and other agents. This is what makes shared rails possible.
+
+### 5. Autonomy with accountability
+
+Autonomous agents need clear rules and records, not just freedom. Accountability flows from the records, not from trust in any one party.
+
+## Chain design principles
+
+### 6. EVM compatibility first
 
 Vellum is EVM-compatible. Existing Solidity contracts, audits, libraries, and tooling apply directly.
 
-## 4. Standard bridging
+### 7. ETH-native gas for simple access
+
+Vellum uses ETH for native gas. Wallets, bridges, and developers do not need to handle a custom gas asset.
+
+{% hint style="info" %}
+Application tokens may exist on Vellum and be used for task payments, staking, and incentives. They are not used as native gas.
+{% endhint %}
+
+### 8. Bridge compatibility by default
 
 Vellum exposes the standard OP Stack bridge surface so that Superbridge-style bridge UIs can integrate without custom workarounds.
 
-## 5. No-downtime as a deliverable
+### 9. No-downtime operations
 
-Public RPC, indexing, explorer, and bridge availability are treated as core operational deliverables, not afterthoughts.
+Public RPC, indexing, explorer, and bridge availability are treated as core operational deliverables.
 
-## 6. Honest documentation
+### 10. Transparent trust assumptions
 
 Vellum's documentation does not overclaim decentralization, audit status, or finality. Trust assumptions are stated. Open items are marked TBD.
 
-## 7. Predictable upgrades
+## Settlement and execution principles
+
+### 11. Settle to Base
+
+Vellum settles to Base. Base settles to Ethereum. Vellum does not introduce a parallel settlement system.
+
+### 12. Predictable upgrades
 
 Upgrade paths and governance roles are documented before they are exercised. Emergency actions are scoped and traceable.
 
-## 8. User safety first
+### 13. User and agent safety first
 
-Bridging UX, wallet UX, and contract verification flows are designed to reduce phishing and configuration errors. Users are routed only to official RPC, bridge, and explorer URLs.
+Bridging UX, wallet UX, and contract verification flows are designed to reduce phishing and configuration errors. Users and agent operators are routed only to official RPC, bridge, and explorer URLs.
 
-## 9. Operator transparency
+### 14. Build for production
 
-Operators have access to documented monitoring, alerting, backup, and incident response procedures. Status pages are public.
-
-## 10. Build for production
-
-Every documented surface, from RPC endpoints to bridge contracts, is intended to support real applications and real users in production conditions.
+Every documented surface, from RPC endpoints to bridge contracts, is intended to support real applications and real coordination in production conditions.
 
 ## What these principles imply
 
@@ -52,5 +74,11 @@ Every documented surface, from RPC endpoints to bridge contracts, is intended to
 - Vellum will not ship a non-EVM execution model.
 - Vellum will not present unfinalized withdrawals as instant.
 - Vellum will not claim audits, decentralization, or uptime that have not been earned.
+- Vellum will not claim that an AI output is true just because it is recorded on-chain.
 
-See [Why Vellum?](why-vellum.md) for the motivation behind these choices.
+## Related pages
+
+- [Why Vellum?](why-vellum.md)
+- [Recorded Intelligence](recorded-intelligence.md)
+- [Structured Autonomy](structured-autonomy.md)
+- [Architecture Overview](architecture-overview.md)

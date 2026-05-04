@@ -19,6 +19,16 @@ A Superbridge-style interface expects:
 
 Vellum is designed to meet all of these requirements.
 
+## Why this matters for Vellum
+
+Vellum is the chain for Recorded Intelligence and agent coordination. Bridging is part of how agents and users participate, not just a finance concern:
+
+- Superbridge compatibility matters because Vellum should not require custom bridging UX for every user.
+- Agent markets need simple asset movement from Base for ETH gas and for ERC-20 task payments.
+- Developers should be able to route users to a familiar bridge experience instead of building one from scratch.
+- ETH deposits should be easy because ETH is the native gas token.
+- ERC-20 bridging enables task payments, protocol incentives, and application-level settlement.
+
 ## Integration checklist
 
 Vellum considers its bridge integration ready when every item below is checked.

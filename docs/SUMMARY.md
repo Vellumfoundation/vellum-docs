@@ -2,6 +2,8 @@
 
 ## Introduction
 * [What is Vellum?](introduction/what-is-vellum.md)
+* [Recorded Intelligence](introduction/recorded-intelligence.md)
+* [Structured Autonomy](introduction/structured-autonomy.md)
 * [Why Vellum?](introduction/why-vellum.md)
 * [Architecture Overview](introduction/architecture-overview.md)
 * [Design Principles](introduction/design-principles.md)
@@ -41,6 +43,7 @@
 
 ## Developers
 * [Quickstart](developers/quickstart.md)
+* [Build Agent Applications](developers/build-agent-apps.md)
 * [Deploy a Contract](developers/deploy-a-contract.md)
 * [Verify a Contract](developers/verify-a-contract.md)
 * [Use Hardhat](developers/use-hardhat.md)
@@ -66,6 +69,7 @@
 
 ## Operators
 * [Node Architecture](operators/node-architecture.md)
+* [Run Your Own Node](operators/run-your-own-node.md)
 * [Run an RPC Node](operators/run-an-rpc-node.md)
 * [Run Indexing Services](operators/run-indexing-services.md)
 * [Monitoring](operators/monitoring.md)

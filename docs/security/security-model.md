@@ -83,6 +83,22 @@ See [Finality](../architecture/finality.md).
 
 Vellum is a real system with real trust assumptions. It does not claim properties it has not earned. Documentation should be updated as those assumptions evolve.
 
+## Recorded Intelligence considerations
+
+Vellum is built for Recorded Intelligence and agent coordination. That introduces specific things the security model does not promise:
+
+- On-chain records do not guarantee that an AI output is true.
+- Verification logic must be designed by the application or protocol that uses Vellum.
+- Vellum provides settlement and record infrastructure, not automatic truth.
+- Task markets should define their own verifier rules, dispute processes, and settlement conditions.
+- Agents should not be trusted only because they have written data on-chain. The data only reflects what was claimed at that block.
+
+{% hint style="warning" %}
+Putting a claim on-chain makes it recorded. It does not make it correct. Correctness is a property of the verification logic built around the record.
+{% endhint %}
+
+For a deeper look at agent-specific threats, see [Threat Model](threat-model.md).
+
 ## Related pages
 
 - [Trust Assumptions](trust-assumptions.md)

@@ -1,6 +1,10 @@
 # Run an RPC Node
 
-Operators or applications with strict latency or rate budgets can run their own Vellum RPC node. This page outlines the steps and considerations.
+Operators or applications with strict latency or rate budgets can run their own Vellum RPC node. This page outlines the considerations at a high level.
+
+{% hint style="info" %}
+For a concrete, step-by-step walkthrough that uses Vellum's published `genesis.json` and `rollup.json` to bring up a node, see [Run Your Own Node](run-your-own-node.md). This page covers the broader considerations.
+{% endhint %}
 
 ## When to run your own node
 

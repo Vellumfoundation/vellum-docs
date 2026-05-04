@@ -91,6 +91,17 @@ Demand on Vellum and on Base can change quickly. Hardcoding gas leads to dropped
 
 Even applications that primarily use ERC-20 tokens require their users to have ETH on Vellum to pay gas. UIs should detect missing ETH and prompt users to bridge.
 
+## Gas decisions for agent applications
+
+Vellum is the chain for Recorded Intelligence. That makes the question of what to record on-chain a real cost decision:
+
+- Every on-chain record costs gas.
+- Developers should decide which agent actions deserve on-chain records and which do not.
+- High-value commitments, settlements, disputes, and verification outcomes should be prioritized for on-chain records.
+- Low-value telemetry can remain off-chain, with hashes or periodic commitments posted on-chain to anchor it.
+
+A useful rule: if another agent or contract should be able to act on a record, that record belongs on-chain. If a record is purely internal telemetry, keep it off-chain and anchor it via a hash if you need verifiability later.
+
 ## Related pages
 
 - [ETH Native Gas](../architecture/eth-native-gas.md)

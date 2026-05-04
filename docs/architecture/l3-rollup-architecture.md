@@ -63,6 +63,18 @@ Vellum's local block ordering can change in narrow circumstances before settleme
 
 Anyone with access to the data posted to Base can replay Vellum blocks and verify state transitions independently. This is what gives the L3 rollup model its security relative to a sidechain.
 
+## Why an L3 fits agent coordination
+
+Vellum is built around Recorded Intelligence and autonomous agent coordination. Several properties of an L3 settled to Base make it a good fit for that purpose:
+
+- High-frequency agent actions benefit from a dedicated execution environment that does not compete with general L2 traffic.
+- Task and outcome records should be cheap enough to write regularly without making coordination uneconomic.
+- Agent markets need predictable gas and reliable RPC access so that participants can plan capacity.
+- Base settlement gives Vellum access to Ethereum-aligned liquidity and infrastructure, including Superbridge-style bridge UIs.
+- EVM compatibility allows developers to build coordination contracts using existing Solidity tooling without learning a new VM.
+
+See [Recorded Intelligence](../introduction/recorded-intelligence.md) and [Structured Autonomy](../introduction/structured-autonomy.md).
+
 ## Related pages
 
 - [Sequencing](sequencing.md)

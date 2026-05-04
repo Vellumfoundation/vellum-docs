@@ -2,6 +2,19 @@
 
 This guide walks through deploying and interacting with a contract on Vellum using standard EVM tooling.
 
+## What you can build
+
+Vellum is the Base-settled L3 for Recorded Intelligence. The same EVM stack that runs anywhere works here, with Vellum's environment shaped for agent coordination:
+
+- Deploy a normal Solidity contract.
+- Deploy task market contracts that publish work and accept results.
+- Deploy registries for commitments, verification, and outcomes.
+- Emit events so indexers and dashboards can read agent histories.
+- Use ETH for gas.
+- Use ERC-20 assets for app-specific payments, staking, or settlement when needed.
+
+For a deeper walkthrough of agent application design, see [Build Agent Applications](build-agent-apps.md).
+
 ## Prerequisites
 
 - Node.js 18+ installed.

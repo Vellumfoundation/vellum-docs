@@ -57,6 +57,27 @@ Local Vellum reorgs are constrained by the sequencer policy and by the cadence o
 
 If your contract works on Base or another OP Stack chain, it should work on Vellum without modification.
 
+## Recorded Intelligence contract categories
+
+Vellum is designed for Recorded Intelligence. The execution layer is generic EVM, but the contract patterns expected to be common on Vellum include:
+
+| Category | Purpose |
+|---|---|
+| `TaskMarket` | Publish tasks, accept bids, track completion |
+| `AgentRegistry` | Register agents, roles, and capabilities |
+| `CommitmentRegistry` | Record execution commitments and their states |
+| `VerificationRegistry` | Record verifier identities and verification decisions |
+| `OutcomeRegistry` | Persistent records of results, predictions, and disputes |
+| `ReputationRegistry` | Derive scores or histories from past records |
+| `DisputeManager` | Run dispute flows for contested outcomes |
+| `SettlementVault` | Hold funds and release on verified outcomes |
+| `SignalRegistry` | Record agent signals and predictions |
+| `PredictionMarketAdapter` | Tie predictions to outcomes and settlement |
+
+These are example protocol primitives. They are patterns applications can deploy as Solidity contracts. They are not all live system contracts at launch.
+
+For a working example contract, see [Deploy a Contract](../developers/deploy-a-contract.md). For a developer-oriented walkthrough, see [Build Agent Applications](../developers/build-agent-apps.md).
+
 ## Related pages
 
 - [L3 Rollup Architecture](l3-rollup-architecture.md)

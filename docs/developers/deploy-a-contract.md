@@ -115,6 +115,113 @@ After deployment:
 
 Always deploy on testnet first. See the [Testnet Roadmap](../roadmap/testnet.md) and [Faucets](../network/faucets.md).
 
+## A more relevant example: SimpleCommitmentRegistry
+
+Vellum is the Base-settled L3 for Recorded Intelligence. A more representative example contract is a minimal commitment registry that captures the lifecycle most agent coordination flows share.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract SimpleCommitmentRegistry {
+    enum Status {
+        Pending,
+        Completed,
+        Verified,
+        Disputed,
+        Settled
+    }
+
+    struct Commitment {
+        address creator;
+        address executor;
+        bytes32 taskHash;
+        bytes32 resultHash;
+        Status status;
+        uint256 createdAt;
+        uint256 updatedAt;
+    }
+
+    uint256 public nextCommitmentId;
+    mapping(uint256 => Commitment) public commitments;
+
+    event CommitmentCreated(uint256 indexed commitmentId, address indexed creator, address indexed executor, bytes32 taskHash);
+    event ResultSubmitted(uint256 indexed commitmentId, bytes32 resultHash);
+    event CommitmentVerified(uint256 indexed commitmentId);
+    event CommitmentDisputed(uint256 indexed commitmentId);
+    event CommitmentSettled(uint256 indexed commitmentId);
+
+    function createCommitment(address executor, bytes32 taskHash) external returns (uint256 commitmentId) {
+        commitmentId = nextCommitmentId++;
+
+        commitments[commitmentId] = Commitment({
+            creator: msg.sender,
+            executor: executor,
+            taskHash: taskHash,
+            resultHash: bytes32(0),
+            status: Status.Pending,
+            createdAt: block.timestamp,
+            updatedAt: block.timestamp
+        });
+
+        emit CommitmentCreated(commitmentId, msg.sender, executor, taskHash);
+    }
+
+    function submitResult(uint256 commitmentId, bytes32 resultHash) external {
+        Commitment storage commitment = commitments[commitmentId];
+        require(msg.sender == commitment.executor, "Only executor");
+        require(commitment.status == Status.Pending, "Invalid status");
+
+        commitment.resultHash = resultHash;
+        commitment.status = Status.Completed;
+        commitment.updatedAt = block.timestamp;
+
+        emit ResultSubmitted(commitmentId, resultHash);
+    }
+
+    function verify(uint256 commitmentId) external {
+        Commitment storage commitment = commitments[commitmentId];
+        require(msg.sender == commitment.creator, "Only creator");
+        require(commitment.status == Status.Completed, "Invalid status");
+
+        commitment.status = Status.Verified;
+        commitment.updatedAt = block.timestamp;
+
+        emit CommitmentVerified(commitmentId);
+    }
+
+    function dispute(uint256 commitmentId) external {
+        Commitment storage commitment = commitments[commitmentId];
+        require(msg.sender == commitment.creator || msg.sender == commitment.executor, "Not participant");
+        require(commitment.status == Status.Completed, "Invalid status");
+
+        commitment.status = Status.Disputed;
+        commitment.updatedAt = block.timestamp;
+
+        emit CommitmentDisputed(commitmentId);
+    }
+
+    function settle(uint256 commitmentId) external {
+        Commitment storage commitment = commitments[commitmentId];
+        require(msg.sender == commitment.creator, "Only creator");
+        require(commitment.status == Status.Verified, "Not verified");
+
+        commitment.status = Status.Settled;
+        commitment.updatedAt = block.timestamp;
+
+        emit CommitmentSettled(commitmentId);
+    }
+}
+```
+
+### Notes on this example
+
+- This is a simple example only.
+- Production task markets should include escrow, token payments, verifier roles, slashing rules, dispute windows, and stronger access control.
+- Events make commitments and outcomes indexable, which is the basis for dashboards and reputation systems.
+- The `taskHash` and `resultHash` fields can point to off-chain task descriptions, model outputs, datasets, or result bundles. Putting hashes on-chain keeps the record cheap while preserving verifiability against off-chain content.
+- For a deeper walk-through of agent application patterns, see [Build Agent Applications](build-agent-apps.md).
+
 ## Related pages
 
 - [Verify a Contract](verify-a-contract.md)

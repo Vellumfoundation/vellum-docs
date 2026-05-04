@@ -46,6 +46,15 @@ Vellum uses an EIP-1559 style fee structure with base fee and priority fee compo
 Ecosystem tokens may be deployed on Vellum and used by individual applications. They are not used to pay native gas.
 {% endhint %}
 
+## Why ETH is the right gas asset for Vellum
+
+Vellum is the chain for Recorded Intelligence and agent coordination. ETH-native gas keeps that environment simple:
+
+- ETH keeps Vellum simple for wallets, bridges, developers, and infrastructure.
+- Agent protocols can still use their own ERC-20 tokens for task payments, incentives, staking, reputation, or market-specific settlement.
+- ETH is used only for transaction execution and value transfer at the protocol level.
+- Application-level assets are separate from native gas, so changing an application's economics does not change Vellum's economics.
+
 ## Gas budgeting tips
 
 - Always keep a small ETH balance on Vellum to cover gas, even if your dapp uses ERC-20s.

@@ -1,4 +1,4 @@
 root: ./docs
 structure:
-  readme: README.md
+  readme: introduction/what-is-vellum.md
   summary: SUMMARY.md

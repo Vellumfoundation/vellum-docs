@@ -1,7 +1,5 @@
 # Summary
 
-* [Vellum Docs](README.md)
-
 ## Introduction
 * [What is Vellum?](introduction/what-is-vellum.md)
 * [Why Vellum?](introduction/why-vellum.md)

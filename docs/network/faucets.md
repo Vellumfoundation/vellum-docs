@@ -1,32 +1,43 @@
 # Faucets
 
-Faucets may be available during testnet to help users and developers obtain testnet ETH for gas.
+Faucets distribute small amounts of testnet ETH so that developers and users can experiment without spending real funds. Faucets are testnet-only.
+
+## Testnet faucet
 
 | Field | Value |
 |---|---|
-| Testnet faucet URL | TBD |
-| Asset | Testnet ETH |
-| Rate limit | TBD |
-| Eligibility | TBD |
-| Mainnet faucet | Not applicable |
+| Vellum testnet faucet | TBD |
+| Base testnet faucet | TBD |
+| Sepolia (L1) faucet | TBD |
 
-{% hint style="warning" %}
-A faucet is only for testnet assets. Mainnet ETH has real value and is not distributed by a faucet.
+{% hint style="info" %}
+Vellum's testnet faucet URL is a placeholder until the public testnet is live. See the [Testnet Roadmap](../roadmap/testnet.md).
 {% endhint %}
 
-## Expected faucet behavior
+## How to get testnet ETH on Vellum
 
-- Requests should be rate limited.
-- Abuse prevention should be documented.
-- The faucet wallet should be monitored.
-- Faucet status should be reflected on the status page.
+The general flow is:
 
-## Developer use
+1. Get testnet ETH on Sepolia from a Sepolia faucet.
+2. Bridge testnet ETH from Sepolia to Base testnet.
+3. Bridge testnet ETH from Base testnet to Vellum testnet.
 
-Use faucet funds for deployments, contract tests, wallet transfers, bridge testing, and RPC integration checks. Do not depend on faucet availability in CI unless a dedicated testing allocation exists.
+Or, when available:
 
-## Related pages
+1. Use the Vellum testnet faucet directly.
 
-- [Testnet Roadmap](../roadmap/testnet.md)
-- [Send ETH](../users/send-eth.md)
-- [Gas and Fees](../developers/gas-and-fees.md)
+## Faucet usage rules
+
+- Testnet ETH has no monetary value.
+- Faucets enforce per-address and per-IP rate limits.
+- Do not script abuse. Operators may block addresses or IPs.
+
+## Mainnet
+
+There are no mainnet faucets. Mainnet ETH must be bridged or transferred from a funded address.
+
+{% hint style="warning" %}
+Anyone offering "mainnet faucets" or "free ETH" is running a scam. Do not connect your wallet to such sites.
+{% endhint %}
+
+See [Bridge to Vellum](../users/bridge-to-vellum.md) for the bridging flow.

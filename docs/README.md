@@ -12,51 +12,63 @@ Vellum L3
 
 Vellum uses ETH as its native gas token and supports normal wallet transfers, smart contract deployment, canonical bridging, RPC access, and explorer indexing.
 
-{% hint style="info" %}
-Final chain ID, public RPC, explorer, bridge URL, and deployed contract addresses are launch placeholders until they are published through official channels.
-{% endhint %}
-
 ## Quick links
 
-| Need | Page |
+| Topic | Page |
 |---|---|
-| Understand Vellum | [What is Vellum?](introduction/what-is-vellum.md) |
-| Add the network | [Wallet Setup](network/wallet-setup.md) |
-| Build a contract | [Developer Quickstart](developers/quickstart.md) |
-| Bridge assets | [Bridge Overview](bridge/bridge-overview.md) |
-| Run infrastructure | [Node Architecture](operators/node-architecture.md) |
-| Review risks | [Security Model](security/security-model.md) |
+| What is Vellum? | [Introduction](introduction/what-is-vellum.md) |
+| Network details | [Network Information](network/network-information.md) |
+| Add to MetaMask | [Wallet Setup](network/wallet-setup.md) |
+| Bridge to Vellum | [Bridge Overview](bridge/bridge-overview.md) |
+| Deploy a contract | [Developer Quickstart](developers/quickstart.md) |
+| Run a node | [Run an RPC Node](operators/run-an-rpc-node.md) |
+| Security model | [Security](security/security-model.md) |
+| FAQ | [Reference FAQ](reference/faq.md) |
 
 ## Network status
 
-| Component | Status |
+| Field | Value |
 |---|---|
+| Network name | Vellum |
+| Settlement layer | Base |
+| Native currency | ETH |
 | Chain ID | TBD |
 | Public RPC | TBD |
-| WebSocket RPC | TBD |
-| Explorer | TBD |
+| Block explorer | TBD |
 | Bridge | TBD |
 | Status page | TBD |
 
-## Developer quickstart
+{% hint style="info" %}
+Final chain ID, RPC endpoints, explorer URL, bridge URL, and contract addresses are placeholders until Vellum's public launch readiness checklist is complete.
+{% endhint %}
 
-Start with [Developer Quickstart](developers/quickstart.md), then choose Hardhat, Foundry, ethers.js, viem, Remix, or thirdweb based on your workflow.
+## Build on Vellum
 
-## Bridge
+Vellum is EVM-compatible. Existing Solidity tooling such as Hardhat, Foundry, ethers.js, viem, thirdweb, and Remix work without modification once the network is added.
 
-Vellum is designed for a Superbridge-compatible bridge experience. Bridge routes must not be treated as live until official URLs and contract addresses are published.
+Get started in the [Developer Quickstart](developers/quickstart.md).
+
+## Bridge to Vellum
+
+Bridging uses an OP Stack style native bridge between Base and Vellum, designed to be compatible with Superbridge-style bridge UIs.
+
+Read the [Bridge Overview](bridge/bridge-overview.md) before moving funds.
+
+{% hint style="warning" %}
+Only use official RPC, bridge, and explorer URLs published in this documentation. Verify links before signing transactions.
+{% endhint %}
 
 ## Security note
 
-Vellum inherits settlement from Base, and Base settles to Ethereum. Users and developers should still account for sequencer assumptions, bridge assumptions, RPC trust, upgrade governance, and application-level smart contract risk.
+Vellum inherits settlement security from Base, which inherits settlement security from Ethereum. Trust assumptions, sequencer behavior, bridge risk, and upgrade governance are documented in the [Security](security/security-model.md) section. No production system is risk-free, and Vellum is no exception.
 
 ## Links
 
 | Resource | URL |
 |---|---|
 | Website | TBD |
-| Docs | TBD |
-| Status | TBD |
 | Explorer | TBD |
 | Bridge | TBD |
+| Status page | TBD |
+| GitHub | TBD |
 | Support | TBD |

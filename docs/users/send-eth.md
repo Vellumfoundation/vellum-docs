@@ -1,32 +1,49 @@
 # Send ETH
 
-Sending ETH on Vellum works like sending ETH on other EVM networks.
+This page covers sending ETH between addresses on Vellum.
+
+## What you need
+
+- A wallet connected to Vellum.
+- Enough ETH on Vellum for the amount being sent and gas.
 
 ## Steps
 
-1. Open your wallet.
-2. Select Vellum.
-3. Enter recipient address.
-4. Enter ETH amount.
-5. Review gas fee.
-6. Confirm transaction.
-7. Check the transaction hash in the explorer.
+1. Open your wallet and switch to Vellum.
+2. Click **Send**.
+3. Paste or scan the recipient address.
+4. Enter the amount in ETH.
+5. Review gas details. Wallets handle estimation automatically.
+6. Confirm.
+7. Wait for the transaction to be included. Wallets typically show success within a few seconds.
 
-{% hint style="warning" %}
-Make sure the recipient address is correct. On-chain transfers cannot be reversed by Vellum operators.
-{% endhint %}
+## Verify the transaction
 
-## Common issues
+- The wallet should show the transaction as confirmed.
+- Open the Vellum [block explorer](../network/block-explorer.md), search the transaction hash, and verify status.
+- The recipient should see the ETH credited.
 
-| Issue | Fix |
-|---|---|
-| Insufficient ETH | Receive or bridge ETH to Vellum |
-| Wrong network | Switch to Vellum |
-| Pending transaction | Check explorer and status page |
-| Invalid address | Confirm the address format |
+## Tips
+
+- Double-check the address before sending. Transactions cannot be reversed.
+- Bookmark frequently used addresses in your wallet to reduce typo risk.
+- If you maintain large balances, consider using a hardware wallet.
+
+## Common errors
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `insufficient funds for gas` | No ETH on Vellum | Bridge ETH from Base or receive from another address |
+| Transaction stuck | Network congestion or low gas | Wait, or speed up via wallet UI |
+| Wrong network | Wallet was on a different chain | Switch the wallet to Vellum |
+
+## Cross-chain confusion
+
+ETH on Vellum is not the same balance as ETH on Base or Ethereum. Each chain has its own balance for the same address. To move ETH between Vellum and Base, use the [bridge](bridge-to-vellum.md).
 
 ## Related pages
 
 - [Receive ETH](receive-eth.md)
+- [Add Vellum to MetaMask](add-vellum-to-metamask.md)
 - [Common Wallet Errors](common-wallet-errors.md)
 - [Gas and Fees](../developers/gas-and-fees.md)

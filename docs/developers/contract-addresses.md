@@ -1,37 +1,59 @@
 # Contract Addresses
 
-Final contract addresses must be published before public launch.
-
-## Core addresses
-
-| Contract | Network | Address |
-|---|---|---|
-| Optimism Portal | Base | TBD |
-| L1 Standard Bridge | Base | TBD |
-| L1 CrossDomainMessenger | Base | TBD |
-| SystemConfig | Base | TBD |
-| DisputeGameFactory or L2OutputOracle | Base | TBD |
-| L2 Standard Bridge | Vellum | TBD |
-| L2 CrossDomainMessenger | Vellum | TBD |
-| WETH | Vellum | `0x4200000000000000000000000000000000000006` |
-| Multicall3 | Vellum | TBD |
+This page lists the addresses of Vellum bridge contracts, predeploys, and other published contracts. Values marked TBD are placeholders until launch.
 
 {% hint style="warning" %}
-Do not integrate against contract addresses from screenshots, chat messages, or unverified deployment logs. Use official published metadata.
+Always copy contract addresses from this page directly. Do not trust addresses pasted in chat, social media, or unrelated sites.
 {% endhint %}
 
-## Publication requirements
+## Bridge contracts on Base
 
-- Address.
-- Chain.
-- Contract name.
-- Source verification status.
-- Deployment transaction hash.
-- ABI.
-- Upgradeability notes where relevant.
+| Contract | Address |
+|---|---|
+| Standard bridge (Base side) | TBD |
+| Portal | TBD |
+| L1 cross-domain messenger | TBD |
+| Output oracle | TBD |
+| System config | TBD |
+
+## Bridge contracts on Vellum
+
+| Contract | Address |
+|---|---|
+| Standard bridge (Vellum side) | TBD |
+| L2 cross-domain messenger | TBD |
+| L2 ETH bridge | TBD |
+| L2 ERC-20 factory or registry | TBD |
+
+## Predeploys on Vellum
+
+| Predeploy | Address |
+|---|---|
+| WETH (if exposed) | TBD |
+| Sequencer fee vault | TBD |
+| Base fee vault | TBD |
+| L1 fee vault | TBD |
+| L2 to L1 message passer | TBD |
+| Cross-domain messenger | TBD |
+| Standard bridge | TBD |
+| Gas price oracle | TBD |
+
+See [Predeploys](predeploys.md) for the role of each.
+
+## Token list
+
+The token list with canonical mappings is published alongside bridge integration. Until then, treat any token claiming to be a canonical Vellum representation with caution.
+
+## Verifying addresses
+
+You can verify any of the addresses above on the Vellum [block explorer](../network/block-explorer.md) once the explorer is live. The bridge contracts on Base can also be inspected on a Base explorer.
+
+## Updates
+
+Address updates and upgrade events are tracked in the [Changelog](../reference/changelog.md).
 
 ## Related pages
 
-- [Superbridge Integration](../bridge/superbridge-integration.md)
-- [Verify a Contract](verify-a-contract.md)
-- [Bridge Risk](../security/bridge-risk.md)
+- [Bridge Architecture](../architecture/bridge-architecture.md)
+- [Superbridge Compatibility](../architecture/superbridge-compatibility.md)
+- [Predeploys](predeploys.md)

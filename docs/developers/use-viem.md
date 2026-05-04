@@ -1,8 +1,35 @@
 # Use viem
 
-viem can define Vellum as a custom chain and use it with public and wallet clients.
+viem is a TypeScript library for building EVM applications. Vellum is fully compatible.
 
-## Example
+## Install
+
+```bash
+npm install viem
+```
+
+## Define the chain
+
+```ts
+import { defineChain } from "viem";
+
+export const vellum = defineChain({
+  id: Number(process.env.VELLUM_CHAIN_ID),
+  name: "Vellum",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  rpcUrls: {
+    default: {
+      http: [process.env.VELLUM_RPC_URL!]
+    }
+  }
+});
+```
+
+## Send a transaction
 
 ```ts
 import { createPublicClient, createWalletClient, http, parseEther } from "viem";
@@ -40,19 +67,61 @@ const hash = await walletClient.sendTransaction({
 console.log(hash);
 ```
 
-## Read block number
+## Read contract state
 
 ```ts
+import { createPublicClient, http } from "viem";
+
 const publicClient = createPublicClient({
   chain: vellum,
   transport: http(process.env.VELLUM_RPC_URL)
 });
 
-console.log(await publicClient.getBlockNumber());
+const message = await publicClient.readContract({
+  address: "0xYOUR_ADDRESS",
+  abi: [
+    { type: "function", name: "message", stateMutability: "view", inputs: [], outputs: [{ type: "string" }] }
+  ],
+  functionName: "message"
+});
+
+console.log(message);
 ```
+
+## Write contract state
+
+```ts
+const hash = await walletClient.writeContract({
+  address: "0xYOUR_ADDRESS",
+  abi: [
+    { type: "function", name: "setMessage", stateMutability: "nonpayable", inputs: [{ type: "string" }], outputs: [] }
+  ],
+  functionName: "setMessage",
+  args: ["New message"]
+});
+```
+
+## Watch events
+
+```ts
+publicClient.watchContractEvent({
+  address: "0xYOUR_ADDRESS",
+  abi: [
+    { type: "event", name: "MessageUpdated", inputs: [{ type: "string", name: "message" }] }
+  ],
+  eventName: "MessageUpdated",
+  onLogs: (logs) => console.log(logs)
+});
+```
+
+## Tips
+
+- Define the chain once and import it everywhere.
+- Use `createPublicClient` for reads and `createWalletClient` for writes.
+- Let viem estimate gas; avoid hardcoded values.
 
 ## Related pages
 
 - [Use ethers.js](use-ethers.md)
 - [Send Transactions](send-transactions.md)
-- [Interact with RPC](interact-with-rpc.md)
+- [Read Chain Data](read-chain-data.md)

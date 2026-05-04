@@ -1,41 +1,68 @@
-# Quickstart
+# Developer Quickstart
 
-This quickstart gets a developer from zero to deploying and reading a contract on Vellum.
+This guide walks through deploying and interacting with a contract on Vellum using standard EVM tooling.
 
 ## Prerequisites
 
-- Node.js 20 or newer.
-- npm, pnpm, or yarn.
-- A wallet private key for testnet development.
-- ETH on Vellum for gas.
-- Vellum RPC URL and chain ID.
-- Hardhat or Foundry.
+- Node.js 18+ installed.
+- A wallet with ETH on Vellum for gas.
+- A code editor.
+- One of: Hardhat, Foundry, or Remix.
 
-## Add network
+## 1. Add Vellum to your wallet
 
-Add Vellum to your wallet using the official values from [Network Information](../network/network-information.md).
+Use the values from [Network Information](../network/network-information.md):
+
+| Field | Value |
+|---|---|
+| Network name | Vellum |
+| RPC URL | TBD |
+| Chain ID | TBD |
+| Currency symbol | ETH |
+| Block explorer URL | TBD |
+
+Detail: [Wallet Setup](../network/wallet-setup.md).
+
+## 2. Set environment variables
 
 ```bash
-export VELLUM_CHAIN_ID=TBD
 export VELLUM_RPC_URL=TBD
+export VELLUM_CHAIN_ID=TBD
+export VELLUM_EXPLORER_API_URL=TBD
+export VELLUM_EXPLORER_API_KEY=TBD
 export PRIVATE_KEY=0x...
 ```
 
-## Install dependencies
+{% hint style="danger" %}
+Never commit private keys. Use environment files that are git-ignored, or a secret manager.
+{% endhint %}
+
+## 3. Install dependencies
+
+For Hardhat:
 
 ```bash
-npm init -y
 npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
-npm install ethers viem
 ```
 
-## Deploy with Hardhat
+For Foundry:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+## 4. Deploy with Hardhat
+
+Configure Vellum in [hardhat.config.ts](#) (see [Use Hardhat](use-hardhat.md)) and run:
 
 ```bash
 npx hardhat run scripts/deploy.ts --network vellum
 ```
 
-## Deploy with Foundry
+## 5. Deploy with Foundry
+
+Configure Vellum in [foundry.toml](#) (see [Use Foundry](use-foundry.md)) and run:
 
 ```bash
 forge script script/Deploy.s.sol:DeployScript \
@@ -44,35 +71,61 @@ forge script script/Deploy.s.sol:DeployScript \
   --broadcast
 ```
 
-## Send a transaction
+## 6. Send a transaction
 
-```bash
-cast send 0x0000000000000000000000000000000000000000 \
-  --value 0.001ether \
-  --rpc-url $VELLUM_RPC_URL \
-  --private-key $PRIVATE_KEY
+A minimal ethers.js example:
+
+```ts
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(process.env.VELLUM_RPC_URL);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+
+const tx = await wallet.sendTransaction({
+  to: "0x0000000000000000000000000000000000000000",
+  value: ethers.parseEther("0.001")
+});
+
+console.log(tx.hash);
 ```
 
-## Verify deployment
+See [Use ethers.js](use-ethers.md) and [Use viem](use-viem.md) for more.
 
-Check the transaction hash in the Vellum explorer. If verification APIs are available, use the explorer verification flow or Foundry and Hardhat verification plugins.
+## 7. Verify deployment
 
-## Read contract state
+- Open the Vellum [block explorer](../network/block-explorer.md).
+- Search for your deployment transaction or contract address.
+- Confirm the contract is present.
+- Verify the source code: see [Verify a Contract](verify-a-contract.md).
 
-Use `eth_call`, ethers.js, viem, Foundry `cast call`, or the explorer read contract tab.
+## 8. Read contract state
 
-## Troubleshooting
+```ts
+import { ethers } from "ethers";
 
-| Error | Fix |
+const provider = new ethers.JsonRpcProvider(process.env.VELLUM_RPC_URL);
+const abi = ["function message() view returns (string)"];
+const contract = new ethers.Contract("0xYOUR_ADDRESS", abi, provider);
+
+console.log(await contract.message());
+```
+
+## 9. Troubleshooting
+
+| Symptom | Likely cause |
 |---|---|
-| Wrong chain ID | Confirm `eth_chainId` and wallet network |
-| Insufficient funds | Add ETH on Vellum |
-| RPC timeout | Check status page and retry |
-| Underpriced transaction | Estimate fees dynamically |
-| Verification failed | Confirm compiler version and constructor args |
+| `insufficient funds for gas` | Wallet has no ETH on Vellum |
+| `chainId mismatch` | RPC URL or chain ID is wrong |
+| `nonce too low / high` | Transaction nonce out of sync, refresh wallet |
+| Contract not found in explorer | Wait for indexer to catch up |
+| Verification fails | Solidity version or settings differ from deployment |
 
-## Related pages
+For wallet issues see [Common Wallet Errors](../users/common-wallet-errors.md).
+
+## Next steps
 
 - [Deploy a Contract](deploy-a-contract.md)
 - [Use Hardhat](use-hardhat.md)
 - [Use Foundry](use-foundry.md)
+- [Interact with RPC](interact-with-rpc.md)
+- [Gas and Fees](gas-and-fees.md)

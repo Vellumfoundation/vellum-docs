@@ -1,8 +1,23 @@
 # Use ethers.js
 
-ethers.js can read from Vellum, send transactions, and interact with contracts through the public RPC.
+ethers.js is a JavaScript and TypeScript library for interacting with Ethereum-compatible chains. Vellum is fully compatible.
 
-## Send ETH
+## Install
+
+```bash
+npm install ethers
+```
+
+## Connect
+
+```ts
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(process.env.VELLUM_RPC_URL);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
+```
+
+## Send a transaction
 
 ```ts
 import { ethers } from "ethers";
@@ -18,19 +33,59 @@ const tx = await wallet.sendTransaction({
 console.log(tx.hash);
 ```
 
-## Read chain ID
+## Read contract state
 
 ```ts
-const network = await provider.getNetwork();
-console.log(network.chainId);
+const abi = ["function message() view returns (string)"];
+const contract = new ethers.Contract("0xYOUR_ADDRESS", abi, provider);
+console.log(await contract.message());
 ```
 
-{% hint style="warning" %}
-Do not send transactions until the provider reports the expected Vellum chain ID.
-{% endhint %}
+## Write contract state
+
+```ts
+const abi = ["function setMessage(string)"];
+const contract = new ethers.Contract("0xYOUR_ADDRESS", abi, wallet);
+const tx = await contract.setMessage("New message");
+await tx.wait();
+```
+
+## Listen for events
+
+```ts
+const abi = ["event MessageUpdated(string message)"];
+const contract = new ethers.Contract("0xYOUR_ADDRESS", abi, provider);
+
+contract.on("MessageUpdated", (msg) => {
+  console.log("Updated:", msg);
+});
+```
+
+## Estimate gas
+
+```ts
+const estimate = await wallet.estimateGas({
+  to: "0xYOUR_ADDRESS",
+  data: "0x"
+});
+console.log(estimate.toString());
+```
+
+## Watch chain head
+
+```ts
+provider.on("block", (n) => console.log("New block:", n));
+```
+
+## Tips
+
+- Use `JsonRpcProvider` for HTTPS endpoints and `WebSocketProvider` for the WebSocket endpoint when published.
+- Avoid hardcoding gas prices. Let ethers and the wallet estimate.
+- Always `await tx.wait()` if you need confirmation before continuing.
 
 ## Related pages
 
 - [Send Transactions](send-transactions.md)
 - [Read Chain Data](read-chain-data.md)
-- [Gas and Fees](gas-and-fees.md)
+- [Interact with RPC](interact-with-rpc.md)
+- [Use viem](use-viem.md)

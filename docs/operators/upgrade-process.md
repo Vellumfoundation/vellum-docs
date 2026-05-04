@@ -1,35 +1,90 @@
 # Upgrade Process
 
-Upgrades should be planned, reviewed, tested, communicated, and reversible where possible.
+This page describes how Vellum upgrades software and contracts. The goal is predictable, reversible upgrades that do not surprise users or operators.
 
-## Upgrade stages
+## What gets upgraded
 
-1. Define scope.
-2. Review protocol and infrastructure impact.
-3. Test in devnet.
-4. Test in public testnet when appropriate.
-5. Prepare rollback plan.
-6. Schedule maintenance window if needed.
-7. Execute with monitoring.
-8. Verify health.
-9. Publish status update.
+| Item | Cadence |
+|---|---|
+| Node and service binaries | As needed |
+| Predeploys | Coordinated with chain upgrades |
+| Bridge contracts | Coordinated, governance-approved |
+| Configuration | Frequent, low-risk |
+| Monitoring and dashboards | Continuous |
 
-## Required artifacts
+## Lifecycle
 
-- Change description.
-- Risk assessment.
-- Affected contracts or services.
-- Deployment commands.
-- Rollback plan.
-- Monitoring checklist.
-- Signer approvals.
+```text
+Plan -> Test -> Stage -> Deploy -> Validate -> Monitor
+```
 
-{% hint style="warning" %}
-Protocol upgrades can affect trust assumptions. Governance and user communication should match the risk level.
-{% endhint %}
+### Plan
+
+- Define scope.
+- Identify affected components.
+- Confirm rollback path.
+- Identify approver.
+
+### Test
+
+- Run on devnet.
+- Run on testnet.
+- Test rollback explicitly.
+- Soak under representative load.
+
+### Stage
+
+- Coordinate timing with stakeholders.
+- Communicate maintenance windows.
+- Pre-stage artifacts.
+
+### Deploy
+
+- Use blue-green or rolling deploys for nodes.
+- For contract upgrades, follow the [Upgrade Governance](../governance/upgrade-governance.md) procedure.
+- Watch metrics in real time.
+
+### Validate
+
+- Confirm chain head and indexers continue advancing.
+- Confirm bridge functions work end-to-end.
+- Run smoke tests.
+
+### Monitor
+
+- Keep close watch for several hours after the change.
+- Be ready to roll back.
+
+## Contract upgrades
+
+Contract upgrades follow the procedures in [Upgrade Governance](../governance/upgrade-governance.md):
+
+- Multisig approval per [Multisig Policy](../governance/multisig-policy.md).
+- Documented diff of changes.
+- Time-locked execution where applicable.
+- Postmortem of behavior after upgrade.
+
+## Rollback
+
+| Component | Rollback |
+|---|---|
+| Node binary | Re-deploy previous version |
+| Indexer | Restore previous schema and data |
+| Predeploy | Following governance procedure |
+| Bridge contract | Following governance procedure |
+| Configuration | Revert in source control |
+
+Document rollback steps before deploying. Test them.
+
+## Communication
+
+- Pre-announce major upgrades on the [Network Status](../network/network-status.md) page.
+- During the upgrade, post real-time updates.
+- After the upgrade, document the result in the [Changelog](../reference/changelog.md).
 
 ## Related pages
 
 - [Upgrade Governance](../governance/upgrade-governance.md)
-- [Upgrade Risk](../security/upgrade-risk.md)
-- [Multisig Policy](../governance/multisig-policy.md)
+- [Roles and Permissions](../governance/roles-and-permissions.md)
+- [Emergency Actions](../governance/emergency-actions.md)
+- [Changelog](../reference/changelog.md)

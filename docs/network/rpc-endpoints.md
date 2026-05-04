@@ -1,19 +1,21 @@
 # RPC Endpoints
 
-Vellum exposes JSON-RPC for wallets, dapps, indexers, scripts, and monitoring services.
+Vellum exposes JSON-RPC over HTTPS and, where available, JSON-RPC over WebSocket. Endpoint URLs are placeholders until Vellum's public launch.
 
-| Endpoint | Value | Notes |
-|---|---|---|
-| Public HTTP RPC | TBD | Use for wallets, reads, and transactions |
-| Public WebSocket RPC | TBD | Use for subscriptions when available |
-| Private operator RPC | Not public | Restricted to internal operators |
-| Health endpoint | TBD | Used by load balancers and uptime checks |
+## Public endpoints
+
+| Endpoint type | URL |
+|---|---|
+| HTTPS JSON-RPC | TBD |
+| WebSocket JSON-RPC | TBD |
 
 {% hint style="warning" %}
-Only use RPC URLs from official Vellum documentation or status pages. Fake RPC URLs can spoof balances, transaction status, and chain data.
+Use only the official endpoints listed here. Third-party RPC URLs may log, censor, modify, or replay traffic.
 {% endhint %}
 
-## Basic checks
+## Quick check
+
+Once endpoints are published, you can verify connectivity with a simple JSON-RPC call:
 
 ```bash
 curl -X POST $VELLUM_RPC_URL \
@@ -21,17 +23,28 @@ curl -X POST $VELLUM_RPC_URL \
   --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
 ```
 
-## Recommended client behavior
+A healthy response returns the chain ID as a hex string.
 
-- Set request timeouts.
-- Retry idempotent read calls.
-- Do not retry signed transactions blindly.
-- Use `eth_estimateGas` before sending transactions.
-- Keep a secondary RPC provider for operational tooling.
-- Monitor HTTP status codes and JSON-RPC errors separately.
+## Rate limits and reliability
 
-## Related pages
+Public RPC endpoints are shared infrastructure. They are operated for high availability but apply rate limits to protect against abuse. Production applications should:
 
-- [Interact with RPC](../developers/interact-with-rpc.md)
-- [RPC Risk](../security/rpc-risk.md)
-- [Run an RPC Node](../operators/run-an-rpc-node.md)
+- Cache reads where possible.
+- Backoff on rate limit responses.
+- Consider running their own [RPC node](../operators/run-an-rpc-node.md) for heavy workloads.
+
+## Supported methods
+
+Standard Ethereum JSON-RPC methods are supported. See [Interact with RPC](../developers/interact-with-rpc.md) for examples and the canonical method list.
+
+## WebSockets
+
+Where the WebSocket endpoint is published, it supports `eth_subscribe` for new heads and logs. Use it for real-time event indexing, mempool watching, and dapp UIs that need push updates.
+
+## Health and status
+
+Endpoint health is reported on the [Network Status](network-status.md) page. Operational targets are documented in [No-Downtime Operations](../operators/no-downtime-operations.md).
+
+## Need a private endpoint?
+
+For applications with strict latency or rate budgets, Vellum supports running self-hosted RPC nodes. See [Run an RPC Node](../operators/run-an-rpc-node.md).

@@ -1,34 +1,47 @@
 # Superbridge Compatibility
 
-Vellum should expose the metadata and contract configuration required for a Superbridge-style bridge UI.
-
-Superbridge compatibility means the bridge route can be described through standard chain metadata, bridge contract addresses, token lists, and tested deposit and withdrawal flows.
+Vellum is designed to be compatible with Superbridge-style bridge interfaces. This page documents what Vellum exposes so that a Superbridge-compatible UI can integrate it.
 
 {% hint style="info" %}
-Superbridge compatibility is a launch requirement. It should be treated as pending until the route is tested with real deployment artifacts.
+Compatibility means Vellum exposes the standard OP Stack bridge surface and chain metadata that Superbridge-style interfaces require. Live integration with any specific bridge UI is a separate step that depends on the operators of that UI.
 {% endhint %}
+
+## What "Superbridge-compatible" means
+
+A Superbridge-style interface expects:
+
+- An OP Stack style native bridge between the parent chain and the chain in question.
+- Standard bridge contracts on both sides.
+- Stable RPC and explorer URLs.
+- A token list.
+- Chain metadata in a recognizable shape.
+- ETH as the native gas token, when the parent chain uses ETH.
+
+Vellum is designed to meet all of these requirements.
 
 ## Integration checklist
 
-| Item | Status |
-|---|---|
-| Chain ID finalized | TBD |
-| RPC endpoint public and stable | TBD |
-| Explorer live | TBD |
-| Native currency set to ETH | Required |
-| Standard bridge contracts deployed | TBD |
-| Base-side bridge contracts configured | TBD |
-| Vellum-side bridge contracts configured | TBD |
-| Token list prepared | TBD |
-| Withdrawal flow tested | TBD |
-| Deposit flow tested | TBD |
-| Contract addresses published | TBD |
-| Chain metadata published | TBD |
-| Icons and branding assets prepared | TBD |
-| Testnet bridge route tested | TBD |
-| Mainnet bridge route tested | TBD |
+Vellum considers its bridge integration ready when every item below is checked.
 
-## Metadata placeholder
+- [ ] Chain ID finalized
+- [ ] RPC endpoint public and stable
+- [ ] Explorer live
+- [ ] Native currency set to ETH
+- [ ] Standard bridge contracts deployed
+- [ ] Base-side bridge contracts configured
+- [ ] Vellum-side bridge contracts configured
+- [ ] Token list prepared
+- [ ] Withdrawal flow tested
+- [ ] Deposit flow tested
+- [ ] Contract addresses published
+- [ ] Chain metadata published
+- [ ] Icons and branding assets prepared
+- [ ] Testnet bridge route tested
+- [ ] Mainnet bridge route tested
+
+## Chain metadata template
+
+The metadata Vellum will publish is shaped as follows. Values shown as `TBD` are placeholders until launch.
 
 ```json
 {
@@ -43,12 +56,8 @@ Superbridge compatibility is a launch requirement. It should be treated as pendi
     "symbol": "ETH",
     "decimals": 18
   },
-  "rpcUrls": [
-    "TBD"
-  ],
-  "blockExplorers": [
-    "TBD"
-  ],
+  "rpcUrls": ["TBD"],
+  "blockExplorers": ["TBD"],
   "bridge": {
     "type": "op-stack-native",
     "standardBridge": "TBD",
@@ -59,29 +68,49 @@ Superbridge compatibility is a launch requirement. It should be treated as pendi
 }
 ```
 
-## Required files
+## Bridge contract placeholders
 
-- `chain-metadata.json`
-- `bridge-addresses.json`
-- `token-list.json`
-- `integration-notes.md`
-- Icon and logo assets
+| Contract | Network | Address |
+|---|---|---|
+| Standard bridge (Base side) | Base | TBD |
+| Portal | Base | TBD |
+| L1 cross-domain messenger | Base | TBD |
+| Output oracle | Base | TBD |
+| Standard bridge (Vellum side) | Vellum | TBD |
+| L2 cross-domain messenger | Vellum | TBD |
 
-## Route testing
+These are also tracked in [Contract Addresses](../developers/contract-addresses.md).
 
-Before public launch, test:
+## Route testing requirements
 
-1. ETH deposit from Base to Vellum.
-2. ETH withdrawal from Vellum to Base.
-3. ERC-20 deposit.
-4. ERC-20 withdrawal.
-5. Failure recovery when a user closes the bridge UI.
-6. Explorer links for every transaction.
-7. Token list rendering.
-8. Wallet chain switching.
+Before declaring a route integration-ready:
+
+| Route | Required tests |
+|---|---|
+| Base testnet to Vellum testnet | Deposit ETH, deposit ERC-20, withdraw ETH, withdraw ERC-20, verify events, verify finalization |
+| Base mainnet to Vellum mainnet | Deposit ETH, deposit ERC-20, withdraw ETH, withdraw ERC-20, verify events, verify finalization |
+
+Detail: [Superbridge Integration](../bridge/superbridge-integration.md).
+
+## Launch readiness checklist
+
+| Item | Status |
+|---|---|
+| Vellum chain ID finalized | TBD |
+| Vellum RPC public | TBD |
+| Vellum explorer public | TBD |
+| Bridge contracts deployed | TBD |
+| Token list ready | TBD |
+| Branding assets ready | TBD |
+| Deposit flow tested | TBD |
+| Withdrawal flow tested | TBD |
+| Status page live | TBD |
+| Documentation published | TBD |
+
+Until each item is marked done, the bridge route should not be considered live for production use.
 
 ## Related pages
 
-- [Superbridge Integration](../bridge/superbridge-integration.md)
 - [Bridge Architecture](bridge-architecture.md)
+- [Superbridge Integration](../bridge/superbridge-integration.md)
 - [Contract Addresses](../developers/contract-addresses.md)

@@ -1,62 +1,106 @@
 # Bridge Architecture
 
-Vellum uses an OP Stack/Superchain-style native bridge architecture between Base and Vellum.
+Vellum's bridge is an OP Stack style native bridge between Base and Vellum. It moves ETH and ERC-20 tokens between the two chains, with a finalization window for withdrawals back to Base.
 
-## Relationship between layers
+## Layered relationship
 
 ```text
 Ethereum L1
-   ↓
-Base L2
-   ↓ bridge parent chain
-Vellum L3
-   ↓ bridge child chain
-Users and dapps
+   ↑
+Base L2  <----  Vellum bridge contracts (Base side)
+   ↑
+Vellum L3  <--  Vellum bridge contracts (Vellum side)
 ```
 
-Base is the parent chain. Vellum is the child chain. ETH deposits move from Base to Vellum through Base-side bridge contracts. ETH withdrawals start on Vellum, are proven against the relevant output, then finalized on Base after the required period.
+Vellum is the L3. Base is the parent chain Vellum settles to. The bridge connects the L3 (Vellum) to its L2 parent (Base).
 
-## Deposit flow
+## Contracts
 
-1. User starts an ETH deposit on Base.
-2. Base-side bridge contract receives the deposit.
-3. A cross-domain message represents the deposit for Vellum.
-4. ETH becomes available on Vellum after the deposit is processed.
-5. The user pays future Vellum gas with ETH.
+| Side | Role |
+|---|---|
+| Base | Standard bridge holds canonical deposits and emits messages to Vellum |
+| Base | Portal coordinates deposit transactions into Vellum |
+| Base | Output oracle records Vellum output roots |
+| Base | L1 cross-domain messenger relays generic messages |
+| Vellum | L2 standard bridge mints and releases bridged assets |
+| Vellum | L2 cross-domain messenger relays generic messages |
 
-## Withdrawal flow
+Specific addresses are placeholders until launch. See [Contract Addresses](../developers/contract-addresses.md).
 
-1. User initiates withdrawal on Vellum.
-2. Withdrawal message is recorded on Vellum.
-3. Output proposal becomes available on Base.
-4. User proves the withdrawal.
-5. User waits through the required finalization period.
-6. User finalizes on Base and receives assets.
+## ETH deposit flow
+
+```text
+User deposits ETH on Base
+   ↓
+Base bridge holds ETH
+   ↓
+Deposit message sent to Vellum
+   ↓
+Vellum credits user's ETH balance
+```
+
+Detail: [Deposit ETH from Base](../bridge/deposit-eth-from-base.md).
+
+## ETH withdrawal flow
+
+```text
+User initiates withdrawal on Vellum
+   ↓
+Withdrawal message recorded in Vellum state
+   ↓
+Output root covering this state posted to Base
+   ↓
+User proves the withdrawal on Base
+   ↓
+Finalization window passes
+   ↓
+User claims ETH on Base
+```
+
+Detail: [Withdraw ETH to Base](../bridge/withdraw-eth-to-base.md) and [Withdrawal Finalization](../bridge/withdrawal-finalization.md).
 
 ## ERC-20 bridging
 
-ERC-20 bridging uses canonical token mapping. A parent token on Base maps to a corresponding token representation on Vellum. Token metadata, bridge addresses, and token routes must be published and tested before public launch.
+ERC-20 tokens use canonical token mapping. A token native to Base is represented by a canonical bridged token contract on Vellum, and vice versa. Bridging ERC-20s uses the standard bridge interfaces on each side.
 
-## Metadata and indexing
+Detail: [Bridge ERC-20 Tokens](../bridge/bridge-erc20-tokens.md).
 
-Bridge UIs need:
+## Canonical token mapping
 
-- Chain ID.
-- Public RPC.
-- Explorer.
-- Parent bridge contracts.
-- Vellum bridge contracts.
+| Property | Description |
+|---|---|
+| Origin chain | Where the asset is canonically issued |
+| Bridged representation | Canonical contract on the destination chain |
+| Mapping authority | Vellum bridge configuration controlled by governance |
+
+Improperly mapped tokens are a real risk vector. See [Bridge Risk](../security/bridge-risk.md).
+
+## Indexing
+
+The bridge frontend and explorer rely on indexers that watch deposit and withdrawal events on both Base and Vellum. Indexers track:
+
+- Deposits initiated on Base.
+- Deposits credited on Vellum.
+- Withdrawals initiated on Vellum.
+- Withdrawals proven on Base.
+- Withdrawals finalized on Base.
+
+## Bridge metadata
+
+Bridge UIs need standard metadata:
+
+- Vellum chain ID.
+- Vellum RPC URL.
+- Vellum explorer URL.
+- Base side bridge contracts.
+- Vellum side bridge contracts.
 - Token list.
-- Icons and branding assets.
-- Tested deposit and withdrawal routes.
-- Bridge indexer support for user status.
+- Branding assets.
 
-{% hint style="warning" %}
-Withdrawals should not be described as instant when proof and finalization steps are required.
-{% endhint %}
+This is what makes Vellum compatible with Superbridge-style bridge interfaces. See [Superbridge Compatibility](superbridge-compatibility.md).
 
 ## Related pages
 
 - [Superbridge Compatibility](superbridge-compatibility.md)
 - [Bridge Overview](../bridge/bridge-overview.md)
-- [Withdrawal Finalization](../bridge/withdrawal-finalization.md)
+- [Bridge Risk](../security/bridge-risk.md)

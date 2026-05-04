@@ -1,6 +1,8 @@
 # Network Information
 
-Use this page for chain connection details once public values are finalized.
+Vellum's connection details are listed below. Some values are placeholders and must be filled before public launch.
+
+## Network parameters
 
 | Field | Value |
 |---|---|
@@ -17,29 +19,37 @@ Use this page for chain connection details once public values are finalized.
 | Superbridge route | TBD |
 
 {% hint style="warning" %}
-Final chain ID, RPC endpoints, explorer, bridge URL, and deployed contract addresses must be filled before public launch.
+Final chain ID, RPC endpoints, explorer, bridge URL, and deployed contract addresses must be filled before public launch. Treat any value above marked TBD as not yet finalized.
 {% endhint %}
 
-## Environment variables
+## Settlement and parent chain
 
-```bash
-export VELLUM_CHAIN_ID=TBD
-export VELLUM_RPC_URL=TBD
-export VELLUM_WS_URL=TBD
-export VELLUM_EXPLORER_URL=TBD
-export VELLUM_BRIDGE_URL=TBD
-```
+| Property | Value |
+|---|---|
+| Vellum role | Ethereum L3 |
+| Parent chain | Base (chain ID 8453) |
+| Parent of Base | Ethereum L1 |
 
-## Verification checklist
+## Wallet quick add
 
-- Confirm chain ID through `eth_chainId`.
-- Confirm the RPC endpoint is official.
-- Confirm explorer and bridge URLs are official.
-- Confirm native currency is ETH with 18 decimals.
-- Confirm bridge contract addresses match published metadata.
+To add Vellum to MetaMask manually, you will need:
 
-## Related pages
+- Network name: Vellum
+- RPC URL: TBD
+- Chain ID: TBD
+- Currency symbol: ETH
+- Block explorer URL: TBD
 
-- [RPC Endpoints](rpc-endpoints.md)
-- [Wallet Setup](wallet-setup.md)
-- [Contract Addresses](../developers/contract-addresses.md)
+See [Wallet Setup](wallet-setup.md) for step-by-step instructions.
+
+## Contract addresses
+
+Bridge contracts, predeploys, and other published contract addresses are listed in [Contract Addresses](../developers/contract-addresses.md). Values are placeholders until the launch readiness checklist is complete.
+
+## Status
+
+Operational status, incident history, and uptime targets are tracked on the [Network Status](network-status.md) page.
+
+{% hint style="info" %}
+Only use official RPC, bridge, and explorer URLs as published in this documentation. Verify links before signing transactions.
+{% endhint %}

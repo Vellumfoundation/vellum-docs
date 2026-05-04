@@ -1,32 +1,59 @@
 # ETH Native Gas
 
-Vellum uses ETH as its native gas token.
+Vellum uses ETH as its native gas token. There is no custom gas token. There is no requirement to acquire a separate asset to transact.
 
-Users need ETH on Vellum to send transactions, deploy contracts, approve tokens, interact with dapps, and pay for bridge-related transactions on the Vellum side.
+## What this means
 
-{% hint style="success" %}
-Wallets and applications should display ETH as the Vellum gas token. No Vellum-specific token is required for gas.
+| Action | Asset used |
+|---|---|
+| Pay transaction gas | ETH |
+| Send value between accounts | ETH |
+| Deploy a contract | ETH |
+| Call a contract | ETH |
+
+## How ETH gets to Vellum
+
+ETH on Vellum arrives in three ways:
+
+1. **Bridge from Base.** Users deposit ETH on Base into the bridge contract; the bridge credits ETH on Vellum. See [Deposit ETH from Base](../bridge/deposit-eth-from-base.md).
+2. **Receive on Vellum.** Another Vellum user sends ETH to the address.
+3. **Faucet (testnet only).** See [Faucets](../network/faucets.md).
+
+## Fee structure
+
+A Vellum transaction fee compensates for:
+
+- Vellum execution work.
+- Settlement costs to Base, which in turn cover Base's own settlement to Ethereum.
+
+These costs are bundled into the gas the transaction consumes. Users see one ETH-denominated cost. Developers should not hardcode gas prices and should let wallets and tooling estimate dynamically.
+
+## EIP-1559 style fee market
+
+Vellum uses an EIP-1559 style fee structure with base fee and priority fee components. Wallets and libraries handle this automatically. Implementations that want to tune fees explicitly should query:
+
+- `eth_feeHistory`
+- `eth_gasPrice`
+- `eth_maxPriorityFeePerGas`
+
+## What is not used
+
+- A separate ERC-20 token for gas.
+- A wrapped ETH variant for gas.
+- A non-ETH staking token for gas.
+
+{% hint style="info" %}
+Ecosystem tokens may be deployed on Vellum and used by individual applications. They are not used to pay native gas.
 {% endhint %}
 
-## Fee behavior
+## Gas budgeting tips
 
-| Fee input | Description |
-|---|---|
-| L3 execution | Cost to execute the transaction on Vellum |
-| Settlement cost | Cost related to posting data or commitments to Base |
-| Congestion | Fees can change with demand and network conditions |
-| Estimation | Apps should call `eth_estimateGas` and fee RPC methods dynamically |
-
-## Developer guidance
-
-- Do not hardcode gas prices.
-- Do not assume every user has ETH on Vellum.
-- Show clear errors for insufficient ETH.
-- Estimate gas before prompting signatures.
-- Use ETH for deployment gas in Hardhat, Foundry, Remix, viem, and ethers.js.
+- Always keep a small ETH balance on Vellum to cover gas, even if your dapp uses ERC-20s.
+- Use fee estimation calls before submitting heavy transactions.
+- Catch and surface "insufficient funds for gas" cleanly in dapp UIs.
 
 ## Related pages
 
 - [Gas and Fees](../developers/gas-and-fees.md)
-- [Send ETH](../users/send-eth.md)
+- [Send Transactions](../developers/send-transactions.md)
 - [Chain ID and Currency](../network/chain-id-and-currency.md)

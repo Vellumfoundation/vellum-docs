@@ -1,33 +1,65 @@
 # Execution Layer
 
-Vellum provides EVM-compatible execution for wallets, Solidity contracts, and standard Ethereum tooling.
+Vellum's execution layer is EVM-compatible. Solidity contracts, EVM bytecode, opcodes, ABI semantics, gas accounting, precompiles, and standard event log behavior follow the Ethereum specification.
 
-## Compatibility target
+## Why EVM compatibility
 
-| Area | Expected behavior |
+- Existing audits and libraries apply directly.
+- Standard tooling works without modification: Hardhat, Foundry, ethers.js, viem, thirdweb, Remix.
+- Wallet support is universal across EVM wallets.
+- Patterns that developers already know transfer to Vellum.
+
+## Supported
+
+| Feature | Supported |
 |---|---|
-| Accounts | Standard EOA and contract accounts |
-| Transactions | EVM transaction execution |
-| Contracts | Solidity and EVM bytecode support |
-| Logs | Standard event logs |
-| JSON-RPC | Ethereum-compatible methods |
-| Tooling | Hardhat, Foundry, Remix, ethers.js, viem |
+| Solidity contracts | Yes |
+| Standard EVM opcodes | Yes |
+| ERC-20, ERC-721, ERC-1155 | Yes |
+| Standard precompiles | Yes |
+| EIP-1559 fee market | Yes |
+| EIP-155 replay protection | Yes |
+| Logs and events | Yes |
+| Standard JSON-RPC methods | Yes |
 
-{% hint style="info" %}
-EVM compatibility does not guarantee every Ethereum mainnet assumption applies. Apps should test against Vellum RPC and explorer before launch.
-{% endhint %}
+## Differences from Ethereum L1
 
-## Developer checks
+Differences are typical for OP Stack style chains:
 
-- Deploy a simple contract.
-- Read contract state.
-- Send an ETH transaction.
-- Estimate gas.
-- Query logs.
-- Verify contract source in the explorer.
+- Block times are shorter than L1.
+- Gas costs reflect L3 economics, including a settlement contribution.
+- Some L1-only block fields and behaviors do not apply.
+
+## Predeploys
+
+Vellum ships with a set of system contracts at fixed predeploy addresses. They handle bridge messaging, fee accounting, and other system functions.
+
+See [Predeploys](../developers/predeploys.md) for the canonical list.
+
+## Block production
+
+The Vellum sequencer produces blocks at a fixed cadence. See [Sequencing](sequencing.md).
+
+## Replay protection
+
+Vellum uses EIP-155 replay protection. Signed transactions reference Vellum's chain ID. Signatures bound to a different chain ID will be rejected.
+
+## Reorg behavior
+
+Local Vellum reorgs are constrained by the sequencer policy and by the cadence of batch submission to Base. Once data is posted to Base and accepted, ordering is stable to the same degree Base is stable. See [Finality](finality.md).
+
+## What is not changed
+
+- The EVM opcode set.
+- Solidity semantics.
+- Gas metering model.
+- Standard token interfaces.
+
+If your contract works on Base or another OP Stack chain, it should work on Vellum without modification.
 
 ## Related pages
 
-- [Deploy a Contract](../developers/deploy-a-contract.md)
+- [L3 Rollup Architecture](l3-rollup-architecture.md)
+- [Sequencing](sequencing.md)
 - [Predeploys](../developers/predeploys.md)
-- [Interact with RPC](../developers/interact-with-rpc.md)
+- [Gas and Fees](../developers/gas-and-fees.md)

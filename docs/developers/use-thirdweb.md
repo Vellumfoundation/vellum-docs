@@ -1,44 +1,103 @@
 # Use thirdweb
 
-thirdweb can connect to Vellum when provided with the final chain ID and RPC URL.
+thirdweb provides SDKs and dashboard tools for deploying and interacting with contracts on EVM chains. Vellum can be added as a custom chain.
 
-## Configuration shape
+## Install
+
+```bash
+npm install thirdweb
+```
+
+## Define the chain
 
 ```ts
-import { defineChain, getContract } from "thirdweb";
+import { defineChain } from "thirdweb/chains";
+
+export const vellum = defineChain({
+  id: Number(process.env.VELLUM_CHAIN_ID),
+  name: "Vellum",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  rpc: process.env.VELLUM_RPC_URL!,
+  blockExplorers: [
+    {
+      name: "Vellum Explorer",
+      url: "TBD"
+    }
+  ]
+});
+```
+
+## Create a client
+
+```ts
 import { createThirdwebClient } from "thirdweb";
 
-const client = createThirdwebClient({
+export const client = createThirdwebClient({
   clientId: process.env.THIRDWEB_CLIENT_ID!
 });
+```
 
-const vellum = defineChain({
-  id: Number(process.env.VELLUM_CHAIN_ID),
-  rpc: process.env.VELLUM_RPC_URL!
-});
+## Read a contract
+
+```ts
+import { getContract, readContract } from "thirdweb";
 
 const contract = getContract({
   client,
   chain: vellum,
-  address: "0x..."
+  address: "0xYOUR_ADDRESS"
 });
+
+const message = await readContract({
+  contract,
+  method: "function message() view returns (string)",
+  params: []
+});
+
+console.log(message);
 ```
 
-## Checklist
+## Write a contract
 
-- Use official chain ID.
-- Use official RPC URL.
-- Confirm ETH is displayed as the gas token.
-- Test contract reads.
-- Test contract writes with small values.
-- Confirm explorer links resolve.
+```ts
+import { sendTransaction, prepareContractCall } from "thirdweb";
+import { privateKeyToAccount } from "thirdweb/wallets";
 
-{% hint style="info" %}
-thirdweb configuration should be updated only after final public network values are published.
-{% endhint %}
+const account = privateKeyToAccount({
+  client,
+  privateKey: process.env.PRIVATE_KEY!
+});
+
+const tx = prepareContractCall({
+  contract,
+  method: "function setMessage(string)",
+  params: ["Hello, Vellum"]
+});
+
+const result = await sendTransaction({ account, transaction: tx });
+console.log(result.transactionHash);
+```
+
+## Deploy via CLI
+
+The thirdweb CLI can deploy contracts to any custom chain. Pass Vellum's RPC URL when prompted, or configure the chain in the project.
+
+```bash
+npx thirdweb deploy
+```
+
+## Tips
+
+- Once Vellum is added in thirdweb, the same chain definition can be reused across all SDK calls.
+- For dashboards, ensure the explorer URL is published so contract pages link out correctly.
 
 ## Related pages
 
-- [Developer Quickstart](quickstart.md)
+- [Use Hardhat](use-hardhat.md)
+- [Use Foundry](use-foundry.md)
+- [Use ethers.js](use-ethers.md)
 - [Use viem](use-viem.md)
-- [Contract Addresses](contract-addresses.md)

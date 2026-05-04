@@ -1,54 +1,68 @@
 # Architecture Overview
 
-Vellum is an Ethereum L3 rollup that uses Base as its settlement layer.
+Vellum is an Ethereum L3 rollup that settles to Base. Transactions execute on Vellum, are sequenced and batched, and are posted down to Base. Base in turn settles to Ethereum L1.
+
+## Layered view
 
 ```text
 Ethereum L1
-   ↓
+   ↑ (settlement)
 Base L2
-   ↓
+   ↑ (settlement)
 Vellum L3
-   ↓
-Applications and users
 ```
 
-## System components
+Each layer below uses the layer above as its trust anchor for settlement. Vellum's data and state commitments end up reflected on Base, and Base's data and state commitments end up reflected on Ethereum.
 
-| Component | Role |
+## Core components
+
+| Component | Responsibility |
 |---|---|
-| Sequencer | Produces Vellum blocks |
-| Execution node | Executes EVM transactions |
-| Batch submitter | Posts transaction data or batches to Base |
-| Proposer | Posts output roots for withdrawal flows |
-| Bridge contracts | Move ETH and supported tokens between Base and Vellum |
-| RPC gateway | Serves public JSON-RPC and WebSocket traffic |
-| Explorer indexer | Indexes blocks, transactions, contracts, and logs |
-| Monitoring stack | Tracks health, latency, lag, and incidents |
+| Sequencer | Orders transactions and produces Vellum blocks |
+| Batch submitter | Submits Vellum transaction batches to Base |
+| Proposer | Posts Vellum output roots to Base |
+| Execution layer | EVM-compatible execution of Vellum transactions |
+| Bridge contracts | Move ETH and ERC-20 tokens between Base and Vellum |
+| RPC nodes | Serve JSON-RPC traffic from users and applications |
+| Indexers | Power explorer, bridge UI, and analytics |
+| Monitoring | Tracks chain health and operational metrics |
 
 ## Data flow
 
 ```text
-User transaction
-   ↓
-Vellum RPC
-   ↓
-Sequencer
-   ↓
-Vellum block
-   ↓
-Batch submission to Base
-   ↓
-Output proposal
-   ↓
-Withdrawal proving and finalization
+User tx -> Vellum sequencer -> Vellum block -> batch submitter -> Base
+                                            -> proposer -> Base output root
 ```
 
-{% hint style="info" %}
-The final implementation details should be checked against the live deployment artifacts before public launch.
-{% endhint %}
+1. A user submits a transaction to a Vellum RPC node.
+2. The sequencer orders the transaction and includes it in a Vellum block.
+3. The batch submitter posts a batch of Vellum transactions to Base.
+4. The proposer posts an output root that commits to Vellum state.
+5. Bridge withdrawals reference these output roots once they are proven and finalized.
 
-## Related pages
+## Bridge surface
 
-- [L3 Rollup Architecture](../architecture/l3-rollup-architecture.md)
-- [Base Settlement](../architecture/base-settlement.md)
-- [Bridge Architecture](../architecture/bridge-architecture.md)
+The bridge is an OP Stack style native bridge between Base and Vellum:
+
+- Base-side contracts hold ETH and bridged ERC-20 deposits.
+- Vellum-side contracts mint and release the corresponding assets.
+- Withdrawals from Vellum to Base require proving and a finalization window.
+
+See [Bridge Architecture](../architecture/bridge-architecture.md) and [Superbridge Compatibility](../architecture/superbridge-compatibility.md).
+
+## Trust anchors
+
+| Anchor | Source |
+|---|---|
+| Vellum settlement | Base |
+| Base settlement | Ethereum |
+| Vellum execution | Vellum sequencer and verifiers |
+| Vellum data availability | Per the configured DA model on Base |
+
+See [Security Model](../security/security-model.md) and [Trust Assumptions](../security/trust-assumptions.md) for the full picture.
+
+## Operational shape
+
+Vellum is operated as a production system. RPC, indexing, monitoring, alerting, and upgrade procedures are documented and run with high-availability targets.
+
+See [No-Downtime Operations](../operators/no-downtime-operations.md).

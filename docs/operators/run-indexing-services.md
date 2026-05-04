@@ -1,31 +1,72 @@
 # Run Indexing Services
 
-Indexing services power explorers, bridge status, analytics, and application-specific queries.
+Indexing services consume Vellum chain data and serve it through structured APIs. They power the explorer, the bridge UI, and analytics.
 
-## Services to index
+## What gets indexed
 
-| Service | Data |
+| Data | Used for |
 |---|---|
-| Explorer | Blocks, transactions, logs, contracts |
-| Bridge indexer | Deposits, withdrawals, message status |
-| App indexers | Product-specific events |
-| Monitoring indexers | Lags, counts, and health signals |
+| Blocks and transactions | Explorer, analytics |
+| Logs and events | Dapp UIs, bridge UIs |
+| Bridge deposits and withdrawals | Bridge frontend |
+| Token transfers | Wallets, explorers |
+| Address activity | Explorer |
 
-## Operational guidance
+## Components
 
-- Track latest indexed block.
-- Alert on indexer lag.
-- Keep database backups.
-- Use replayable event ingestion.
-- Separate read replicas for heavy query APIs.
-- Reindex after schema changes.
+- Block follower: subscribes to new blocks via WebSocket or polls via HTTP.
+- Backfiller: reads historical blocks for cold start or gap recovery.
+- Decoder: applies ABIs to decode logs and calls.
+- Storage: a database optimized for the workload.
+- API: serves the indexed data to consumers.
 
-{% hint style="info" %}
-Indexer lag should be visible on dashboards and status pages when it affects users.
-{% endhint %}
+## Data sources
+
+| Source | Use |
+|---|---|
+| Vellum RPC node | Primary chain data |
+| Vellum WebSocket | Live updates |
+| Base RPC | Bridge events on the parent side |
+
+## Reliability patterns
+
+- Always run two indexers, active and standby, with health checks.
+- Track and alert on indexer lag.
+- Persist last processed block per indexer to enable safe restarts.
+- Detect and handle reorgs at every layer.
+
+## Indexer lag
+
+`explorer_indexer_lag` should be a primary alerting metric. Lag means the explorer or bridge UI shows stale data, which leads to user confusion and support load.
+
+| Lag | Severity |
+|---|---|
+| Under 1 minute | Healthy |
+| 1 to 5 minutes | Warn |
+| Over 5 minutes | Page |
+
+## Schema discipline
+
+- Track schema migrations explicitly.
+- Run migrations before pointing the API at the new schema.
+- Avoid breaking changes during a release window.
+
+## Capacity planning
+
+- Project growth based on chain throughput.
+- Provision storage with headroom.
+- Plan reindex cost into deploy time.
+
+## Resilience tests
+
+- Reorg simulation.
+- Cold-start backfill.
+- Database failover.
+- RPC source failover.
 
 ## Related pages
 
-- [Block Explorer](../network/block-explorer.md)
+- [Node Architecture](node-architecture.md)
 - [Monitoring](monitoring.md)
 - [Backups](backups.md)
+- [Block Explorer](../network/block-explorer.md)

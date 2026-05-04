@@ -1,45 +1,57 @@
 # What is Vellum?
 
-Vellum is an Ethereum-compatible L3 rollup that settles to Base and uses ETH as its native gas token.
+Vellum is an Ethereum-compatible Layer 3 rollup. It settles to Base and uses ETH as its native gas token. Vellum is designed for teams that want a dependable execution environment above Base without giving up EVM tooling, wallet support, or canonical bridging.
 
-It is designed for teams that need dependable EVM execution above Base without changing the normal developer or wallet experience. Users send ETH, developers deploy Solidity contracts, and operators run production infrastructure around RPC, indexing, monitoring, and bridge services.
+## In one paragraph
+
+Vellum is an L3 chain. Transactions execute on Vellum, are sequenced into batches, and are posted down to Base for settlement. Base in turn settles to Ethereum L1. Users pay gas in ETH. Developers deploy normal Solidity contracts. Wallets like MetaMask connect with standard JSON-RPC. Bridging follows an OP Stack style native bridge model so that Superbridge-compatible interfaces can integrate without custom workarounds.
+
+## Position in the stack
 
 ```text
 Ethereum L1
-   ↓ settlement
+   ↓
 Base L2
-   ↓ parent chain
+   ↓
 Vellum L3
-   ↓ execution
-Apps, wallets, contracts, and bridge flows
 ```
 
-## Core properties
+Vellum does not replace Base. It extends Base by giving applications and operators a dedicated execution surface that inherits Base's settlement and, transitively, Ethereum's settlement.
 
-| Property | Vellum position |
+## What Vellum is
+
+| Property | Vellum |
 |---|---|
+| Chain type | Ethereum L3 rollup |
 | Settlement | Base |
-| Native gas | ETH |
+| Native gas token | ETH |
 | Execution | EVM-compatible |
-| Bridge model | OP Stack/Superchain-style native bridge |
-| Wallet transfers | Supported |
-| Smart contracts | Supported |
-| Explorer indexing | Required |
-| Superbridge compatibility | Required |
-
-{% hint style="success" %}
-If an application already supports standard EVM networks, Vellum should feel familiar once chain ID, RPC, explorer, and bridge metadata are published.
-{% endhint %}
+| Bridge model | OP Stack style native bridge |
+| Bridge UX | Superbridge-compatible |
+| Wallet support | Standard EVM wallets |
+| Tooling | Hardhat, Foundry, viem, ethers, thirdweb, Remix |
 
 ## What Vellum is not
 
-- Vellum is not a custom gas token network.
-- Vellum is not live until public launch information is published.
-- Vellum should not be described as fully decentralized unless governance and operations are updated to support that claim.
-- Vellum does not remove normal smart contract, bridge, RPC, or wallet risks.
+- Vellum is not an L1.
+- Vellum is not an L2.
+- Vellum is not a sidechain.
+- Vellum does not use a custom token for gas. ETH is the gas token.
+- Vellum is not a fork of an unrelated VM. It is EVM-compatible.
 
-## Related pages
+{% hint style="info" %}
+Ecosystem tokens may be deployed on Vellum, but they are not the native gas token. ETH is the gas token.
+{% endhint %}
 
-- [Why Vellum?](why-vellum.md)
-- [Architecture Overview](architecture-overview.md)
-- [Security Model](../security/security-model.md)
+## Who Vellum is for
+
+- Application developers who want EVM execution above Base.
+- Operators who need predictable RPC, indexing, and monitoring.
+- Users who want familiar wallets, familiar gas, and a recognizable bridge flow.
+
+## Where to go next
+
+- [Why Vellum?](why-vellum.md) for the motivation.
+- [Architecture Overview](architecture-overview.md) for the system shape.
+- [Network Information](../network/network-information.md) for connection details.
+- [Developer Quickstart](../developers/quickstart.md) to deploy your first contract.
